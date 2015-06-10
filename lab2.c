@@ -4,6 +4,7 @@
 
 #define NUMSTATES 7
 #define NUMEVENTS 2
+#define THRESHOLD 9999999
 
 char curr_state[32];
 char curr_event[16];
@@ -84,7 +85,6 @@ void EINT3_IRQHandler()
 
 int main (void)
 {
-	uint32_t THRESHOLD = 9999999;
 	state current_state = S0;
 	event current_event;
 	init_system();
