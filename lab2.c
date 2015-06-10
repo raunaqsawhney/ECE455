@@ -4,7 +4,7 @@
 
 #define NUMSTATES 7
 #define NUMEVENTS 2
-#define THRESHOLD 9999999
+#define THRESHOLD 8000000
 
 char curr_state[32];
 char curr_event[16];
@@ -90,6 +90,9 @@ int main (void)
 	init_system();
 	init_int0();
 	
+	sprintf(curr_state, "STATE: %02d", current_state);
+	GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
+	
 	while (1)
 	{
 		if (current_state == S7)
@@ -110,9 +113,6 @@ int main (void)
 			
 			current_state = transition_matrix[current_state][current_event];
 			global_time = 0;
-			sprintf(curr_state, "STATE: %02d", current_state);
-			GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
-		} else {
 			sprintf(curr_state, "STATE: %02d", current_state);
 			GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
 		}
