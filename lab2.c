@@ -2,10 +2,16 @@
 #include "glcd.h"
 #include <stdio.h>
 
-char curr_state[16];
-int input;
+#define NUMSTATES 7
+#define NUMEVENTS 2
+
+char curr_state[32];
+char curr_event[16];
 int global_time;
-char counter[64];
+
+volatile uint32_t tim0_val;
+volatile int int0_val;
+int global_time;
 
 typedef enum {
 	S0,		// 0
@@ -23,15 +29,14 @@ typedef enum {
 	DASH,	// 1
 } event;
 	
-state transition_matrix[8][2] = {
+state transition_matrix[NUMSTATES][NUMEVENTS] = {
 	{S1, S0},
 	{S0, S2},
 	{S1, S3},
 	{S4, S0},
 	{S1, S5},
 	{S6, S3},
-	{S7, S2},
-	{S7, S7}
+	{S7, S2}
 };
 
 void init_system()
@@ -54,10 +59,7 @@ void init_int0()
 }
 
 void EINT3_IRQHandler()
-{
-	int int0_val;
-	volatile int tim0_val;
-	
+{	
 	// Clear the interrupt on EINT0
 	LPC_GPIOINT->IO2IntClr |= 1 << 10;
 	
@@ -66,54 +68,57 @@ void EINT3_IRQHandler()
 	if (int0_val == 1)
 	{
 		// Start Timer
-	  LPC_TIM0->TCR = 0x02;
-		LPC_TIM0->TCR = 0x01;
-		LPC_TIM0->PR  = 0x00; 
+		global_time = 0;
+		LPC_TIM0->TCR = 0x01; 
 	}
 	else if (int0_val == 0)
 	{
 		tim0_val = LPC_TIM0->TC;
 		// Stop Timer
 		LPC_TIM0->TCR = 0x02;
-
+		LPC_TIM0->PR  = 0x00;
+		
+		global_time = tim0_val;
 	}
-	
-	global_time = tim0_val;
-	
 }
 
 int main (void)
 {
-	int pattern_match = 0;
+	uint32_t THRESHOLD = 9999999;
 	state current_state = S0;
 	event current_event;
-	
 	init_system();
 	init_int0();
-
+	
 	while (1)
 	{
-		GLCD_DisplayString(7,1,1, "");
-		sprintf(counter, "%d", global_time);
-		GLCD_DisplayString(7,1,1, (unsigned char *)counter);
-	}
-	
-	while (!pattern_match)
-	{
-		if (input == 0)
-			current_event = DOT;
-		else if (input == 1)
-			current_event = DASH;
-		
-		current_state = transition_matrix[current_state][current_event];
-		
-		sprintf(curr_state, "%02d", current_state);
-		GLCD_DisplayString(7, 1, 1, (unsigned char *)curr_state);
-		
 		if (current_state == S7)
-		{
-			pattern_match = 1;
-			GLCD_DisplayString(7,1,1,"CORRECT");
+			break;
+		
+		if (global_time >= THRESHOLD && global_time > 0) {
+			current_event = DASH;
+			GLCD_DisplayString(2, 1, 1, "INPUT EVENT: DASH");
+		
+			current_state = transition_matrix[current_state][current_event];
+			global_time = 0;
+			sprintf(curr_state, "STATE: %02d", current_state);
+			GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
+			
+		} else if (global_time < THRESHOLD && global_time > 0) {
+			current_event = DOT;
+			GLCD_DisplayString(2, 1, 1, "INPUT EVENT: DOT ");
+			
+			current_state = transition_matrix[current_state][current_event];
+			global_time = 0;
+			sprintf(curr_state, "STATE: %02d", current_state);
+			GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
+		} else {
+			sprintf(curr_state, "STATE: %02d", current_state);
+			GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
 		}
 	}
+	sprintf(curr_state, "STATE: %02d", current_state);
+	GLCD_DisplayString(1, 1, 1, (unsigned char *)curr_state);
+	GLCD_ClearLn(2,1);
+	GLCD_DisplayString(2,1,1,"CORRECT");
 }

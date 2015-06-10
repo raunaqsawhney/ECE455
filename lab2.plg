@@ -10,7 +10,31 @@ Project File Date:  06/08/2015
 Build target 'LPC1768_FLASH'
 compiling lab2.c...
 linking...
-Program Size: Code=3678 RO-data=6510 RW-data=20 ZI-data=740  
+Program Size: Code=4270 RO-data=6526 RW-data=40 ZI-data=656  
+"lab2.axf" - 0 Error(s), 0 Warning(s).
+Load "N:\\ece455\\lab2.AXF" 
+Erase Done.
+Programming Done.
+Verify OK.
+Rebuild target 'LPC1768_FLASH'
+assembling startup_LPC17xx.s...
+compiling lab2.c...
+compiling GLCD_SPI_LPC1700.c...
+compiling system_LPC17xx.c...
+linking...
+Program Size: Code=4242 RO-data=6526 RW-data=40 ZI-data=656  
+"lab2.axf" - 0 Error(s), 0 Warning(s).
+Load "N:\\ece455\\lab2.AXF" 
+Erase Done.
+Programming Done.
+Verify OK.
+Rebuild target 'LPC1768_FLASH'
+assembling startup_LPC17xx.s...
+compiling lab2.c...
+compiling GLCD_SPI_LPC1700.c...
+compiling system_LPC17xx.c...
+linking...
+Program Size: Code=4242 RO-data=6526 RW-data=40 ZI-data=656  
 "lab2.axf" - 0 Error(s), 0 Warning(s).
 Load "N:\\ece455\\lab2.AXF" 
 Erase Done.
@@ -19,245 +43,26 @@ Verify OK.
 Build target 'LPC1768_FLASH'
 compiling lab2.c...
 linking...
-Program Size: Code=3682 RO-data=6510 RW-data=20 ZI-data=740  
+Program Size: Code=4290 RO-data=6526 RW-data=40 ZI-data=656  
 "lab2.axf" - 0 Error(s), 0 Warning(s).
 Load "N:\\ece455\\lab2.AXF" 
 Erase Done.
 Programming Done.
 Verify OK.
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(79): error:  #268: declaration may not appear after executable statement in block
-lab2.c(79): error:  #20: identifier "bool" is undefined
-lab2.c(79): error:  #20: identifier "false" is undefined
-lab2.c(81): error:  #20: identifier "patternMatch" is undefined
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(5): error:  #40: expected an identifier
-lab2.c(5): error:  #65: expected a ";"
-lab2.c(76): error:  #20: identifier "global_counter" is undefined
-lab2.c(85): error:  #268: declaration may not appear after executable statement in block
-lab2.c(86): error:  #268: declaration may not appear after executable statement in block
-lab2.c(87): error:  #268: declaration may not appear after executable statement in block
-lab2.c(88): error:  #268: declaration may not appear after executable statement in block
-lab2.c(90): error:  #20: identifier "patternMatch" is undefined
-lab2.c(92): error:  #20: identifier "input" is undefined
-lab2.c(99): error:  #20: identifier "curr_state" is undefined
-lab2.c(104): error:  #20: identifier "pattern_match" is undefined
-lab2.c(85): warning:  #177-D: variable "pattenMatch" was declared but never referenced
-lab2.c(87): warning:  #177-D: variable "next_state" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(76): error:  #20: identifier "global_counter" is undefined
-lab2.c(85): error:  #268: declaration may not appear after executable statement in block
-lab2.c(86): error:  #268: declaration may not appear after executable statement in block
-lab2.c(87): error:  #268: declaration may not appear after executable statement in block
-lab2.c(88): error:  #268: declaration may not appear after executable statement in block
-lab2.c(90): error:  #20: identifier "patternMatch" is undefined
-lab2.c(92): error:  #20: identifier "input" is undefined
-lab2.c(104): error:  #20: identifier "pattern_match" is undefined
-lab2.c(85): warning:  #177-D: variable "pattenMatch" was declared but never referenced
-lab2.c(87): warning:  #177-D: variable "next_state" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(56): warning:  #550-D: variable "tim0_val" was set but never used
-lab2.c(84): error:  #268: declaration may not appear after executable statement in block
-lab2.c(85): error:  #268: declaration may not appear after executable statement in block
-lab2.c(86): error:  #268: declaration may not appear after executable statement in block
-lab2.c(87): error:  #268: declaration may not appear after executable statement in block
-lab2.c(89): error:  #20: identifier "patternMatch" is undefined
-lab2.c(91): error:  #20: identifier "input" is undefined
-lab2.c(103): error:  #20: identifier "pattern_match" is undefined
-lab2.c(84): warning:  #177-D: variable "pattenMatch" was declared but never referenced
-lab2.c(86): warning:  #177-D: variable "next_state" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(56): warning:  #550-D: variable "tim0_val" was set but never used
-lab2.c(89): error:  #20: identifier "patternMatch" is undefined
-lab2.c(91): error:  #20: identifier "input" is undefined
-lab2.c(103): error:  #20: identifier "pattern_match" is undefined
-lab2.c(81): warning:  #177-D: variable "pattenMatch" was declared but never referenced
-lab2.c(83): warning:  #177-D: variable "next_state" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(56): warning:  #550-D: variable "tim0_val" was set but never used
-lab2.c(91): error:  #20: identifier "input" is undefined
-lab2.c(103): error:  #20: identifier "pattern_match" is undefined
-lab2.c(83): warning:  #177-D: variable "next_state" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(56): warning:  #550-D: variable "tim0_val" was set but never used
-lab2.c(91): error:  #20: identifier "input" is undefined
-lab2.c(83): warning:  #177-D: variable "next_state" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(56): warning:  #550-D: variable "tim0_val" was set but never used
-lab2.c(90): error:  #20: identifier "input" is undefined
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(57): warning:  #550-D: variable "tim0_val" was set but never used
-linking...
-Program Size: Code=4056 RO-data=6528 RW-data=32 ZI-data=624  
-"lab2.axf" - 0 Error(s), 1 Warning(s).
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(57): warning:  #550-D: variable "tim0_val" was set but never used
-linking...
-Program Size: Code=4056 RO-data=6528 RW-data=32 ZI-data=624  
-"lab2.axf" - 0 Error(s), 1 Warning(s).
 Build target 'LPC1768_FLASH'
 compiling lab2.c...
 linking...
-Program Size: Code=4056 RO-data=6528 RW-data=32 ZI-data=624  
+Program Size: Code=4262 RO-data=6526 RW-data=40 ZI-data=656  
 "lab2.axf" - 0 Error(s), 0 Warning(s).
+Load "N:\\ece455\\lab2.AXF" 
+Erase Done.
+Programming Done.
+Verify OK.
 Build target 'LPC1768_FLASH'
 compiling lab2.c...
 linking...
-Program Size: Code=4064 RO-data=6528 RW-data=36 ZI-data=628  
+Program Size: Code=4282 RO-data=6526 RW-data=40 ZI-data=656  
 "lab2.axf" - 0 Error(s), 0 Warning(s).
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(88): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(90): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3684 RO-data=6508 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(88): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(90): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3684 RO-data=6508 RW-data=36 ZI-data=756  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(88): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(90): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3684 RO-data=6508 RW-data=36 ZI-data=660  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(88): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(90): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3684 RO-data=6508 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(87): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3682 RO-data=6510 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(88): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(90): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3682 RO-data=6510 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(86): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(87): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3678 RO-data=6510 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(86): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(87): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3676 RO-data=6508 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(87): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3682 RO-data=6510 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(96): error:  #20: identifier "null" is undefined
-lab2.c(87): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_event" was declared but never referenced
-Target not created
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(87): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3698 RO-data=6510 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
-Load "N:\\ece455\\lab2.AXF" 
-Erase Done.
-Programming Done.
-Verify OK.
-Build target 'LPC1768_FLASH'
-compiling lab2.c...
-lab2.c(87): warning:  #177-D: variable "pattern_match" was declared but never referenced
-lab2.c(88): warning:  #177-D: variable "current_state" was declared but never referenced
-lab2.c(89): warning:  #177-D: variable "current_event" was declared but never referenced
-linking...
-Program Size: Code=3744 RO-data=6508 RW-data=36 ZI-data=692  
-"lab2.axf" - 0 Error(s), 3 Warning(s).
 Load "N:\\ece455\\lab2.AXF" 
 Erase Done.
 Programming Done.
