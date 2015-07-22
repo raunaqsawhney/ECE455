@@ -1,0 +1,12 @@
+--cpu Cortex-M3
+".\output\startup_mps_cm3.o"
+".\output\main.o"
+".\output\tasks.o"
+".\output\list.o"
+".\output\queue.o"
+".\output\port.o"
+".\output\heap_1.o"
+--library_type=microlib --strict --scatter ".\Output\Simple-FreeRTOS-Demo.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Simple-FreeRTOS-Demo.map" -o .\Output\Simple-FreeRTOS-Demo.axf
