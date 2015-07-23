@@ -1,68 +1,3 @@
-/*
-    FreeRTOS V6.1.0 - Copyright (C) 2010 Real Time Engineers Ltd.
-
-    ***************************************************************************
-    *                                                                         *
-    * If you are:                                                             *
-    *                                                                         *
-    *    + New to FreeRTOS,                                                   *
-    *    + Wanting to learn FreeRTOS or multitasking in general quickly       *
-    *    + Looking for basic training,                                        *
-    *    + Wanting to improve your FreeRTOS skills and productivity           *
-    *                                                                         *
-    * then take a look at the FreeRTOS books - available as PDF or paperback  *
-    *                                                                         *
-    *        "Using the FreeRTOS Real Time Kernel - a Practical Guide"        *
-    *                  http://www.FreeRTOS.org/Documentation                  *
-    *                                                                         *
-    * A pdf reference manual is also available.  Both are usually delivered   *
-    * to your inbox within 20 minutes to two hours when purchased between 8am *
-    * and 8pm GMT (although please allow up to 24 hours in case of            *
-    * exceptional circumstances).  Thank you for your support!                *
-    *                                                                         *
-    ***************************************************************************
-
-    This file is part of the FreeRTOS distribution.
-
-    FreeRTOS is free software; you can redistribute it and/or modify it under
-    the terms of the GNU General Public License (version 2) as published by the
-    Free Software Foundation AND MODIFIED BY the FreeRTOS exception.
-    ***NOTE*** The exception to the GPL is included to allow you to distribute
-    a combined work that includes FreeRTOS without being obliged to provide the
-    source code for proprietary components outside of the FreeRTOS kernel.
-    FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-    more details. You should have received a copy of the GNU General Public
-    License and the FreeRTOS license exception along with FreeRTOS; if not it
-    can be viewed here: http://www.freertos.org/a00114.html and also obtained
-    by writing to Richard Barry, contact details for whom are available on the
-    FreeRTOS WEB site.
-
-    1 tab == 4 spaces!
-
-    http://www.FreeRTOS.org - Documentation, latest information, license and
-    contact details.
-
-    http://www.SafeRTOS.com - A version that is certified for use in safety
-    critical systems.
-
-    http://www.OpenRTOS.com - Commercial support, development, porting,
-    licensing and training services.
-*/
-
-/*
- * This is a very simple demo that demonstrates task and queue usages only in
- * a simple and minimal FreeRTOS configuration.  Details of other FreeRTOS 
- * features (API functions, tracing features, diagnostic hook functions, memory
- * management, etc.) can be found on the FreeRTOS web site 
- * (http://www.FreeRTOS.org) and in the FreeRTOS book.
- *
- * Details of this demo (what it does, how it should behave, etc.) can be found
- * in the accompanying PDF application note.
- *
-*/
-
 /* Kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -71,17 +6,16 @@
 /* Standard include. */
 #include <stdio.h>
 
-/* Priorities at which the tasks are created. */
-#define mainQUEUE_RECEIVE_TASK_PRIORITY		( tskIDLE_PRIORITY + 2 )
-#define	mainQUEUE_SEND_TASK_PRIORITY		( tskIDLE_PRIORITY + 1 )
+#define S_TO_MS 1000
+#define MS_TO_S_SIMULATOR 1680000
 
-/* The rate at which data is sent to the queue, specified in milliseconds. */
-#define mainQUEUE_SEND_FREQUENCY_MS			( 10 / portTICK_RATE_MS )
+#define TASK1_EXECUTION_TIME 1
+#define TASK2_EXECUTION_TIME 2
+#define TASK3_EXECUTION_TIME 3
 
-/* The number of items the queue can hold.  This is 1 as the receive task
-will remove items as they are added, meaning the send task should always find
-the queue empty. */
-#define mainQUEUE_LENGTH					( 1 )
+#define TASK1_PERIOD 4
+#define TASK2_PERIOD 6
+#define TASK3_PERIOD 8
 
 /* The ITM port is used to direct the printf() output to the serial window in 
 the Keil simulator IDE. */
@@ -90,13 +24,23 @@ the Keil simulator IDE. */
 #define mainDEMCR           (*((volatile unsigned long *)(0xE000EDFC)))
 #define mainTRCENA          0x01000000
 
+// Deadlines of the tasks as required for the assignment
+int deadlines[3] = {4,6,8};
 /*-----------------------------------------------------------*/
 
 /*
  * The tasks as described in the accompanying PDF application note.
  */
-static void prvQueueReceiveTask( void *pvParameters );
-static void prvQueueSendTask( void *pvParameters );
+static void edfTask1( void *pvParameters );
+static void edfTask2( void *pvParameters );
+static void edfTask3( void *pvParameters );
+
+/*
+ * Handles for Tasks created
+ */
+ xTaskHandle task1;
+ xTaskHandle task2;
+ xTaskHandle task3;
 
 /*
  * Redirects the printf() output to the serial window in the Keil simulator
@@ -105,9 +49,6 @@ static void prvQueueSendTask( void *pvParameters );
 int fputc( int iChar, FILE *pxNotUsed );
 
 /*-----------------------------------------------------------*/
-
-/* The queue used by both tasks. */
-static xQueueHandle xQueue = NULL;
 
 /* One array position is used for each task created by this demo.  The 
 variables in this array are set and cleared by the trace macros within
@@ -118,78 +59,206 @@ unsigned long ulTaskNumber[ configEXPECTED_NO_RUNNING_TASKS ];
 
 /*-----------------------------------------------------------*/
 
-int main(void)
+// EDF Scheduler
+void edfScheduler()
 {
-	/* Create the queue. */
-	xQueue = xQueueCreate( mainQUEUE_LENGTH, sizeof( unsigned long ) );
 
-	if( xQueue != NULL )
+	// Default priorities, based on earliest deadlines
+	vTaskPrioritySet(task1, 3);
+	vTaskPrioritySet(task2, 2);
+	vTaskPrioritySet(task3, 1);
+
+	// Task 1 > Task 2 > Task 3
+	if (deadlines[0] > deadlines[1])
 	{
-		/* Start the two tasks as described in the accompanying application
-		note. */
-		xTaskCreate( prvQueueReceiveTask, ( signed char * ) "Rx", configMINIMAL_STACK_SIZE, NULL, mainQUEUE_RECEIVE_TASK_PRIORITY, NULL );
-		xTaskCreate( prvQueueSendTask, ( signed char * ) "TX", configMINIMAL_STACK_SIZE, NULL, mainQUEUE_SEND_TASK_PRIORITY, NULL );
-
-		/* Start the tasks running. */
-		vTaskStartScheduler();
+		if (deadlines[1] > deadlines[2])
+		{
+			vTaskPrioritySet(task3, 3);
+			vTaskPrioritySet(task2, 2);
+			vTaskPrioritySet(task1, 1);
+			return;
+		}
+	} 
+	// Task 2 > Task 1 > Task 3
+	else if (deadlines[0] < deadlines[1])
+	{
+		if (deadlines[0] > deadlines[2])
+		{
+			vTaskPrioritySet(task3, 3);
+			vTaskPrioritySet(task1, 2);
+			vTaskPrioritySet(task2, 1);
+			return;
+		}
+	}
+	// Task 1 == Task 2
+	else if (deadlines[0] == deadlines[1])
+	{
+		// Task 1 == Task 2 ; Task 3 > Task 1 (and Task 2)
+		if (deadlines[0] < deadlines[2])
+		{
+			vTaskPrioritySet(task1, 3);
+			vTaskPrioritySet(task2, 2);
+			vTaskPrioritySet(task3, 1);
+			return;
+		}
+		// Task 1 == Task 2 ; Task 1 (and Task 2) > Task 3
+		else if (deadlines[0] > deadlines[2])
+		{
+			vTaskPrioritySet(task3, 3);
+			vTaskPrioritySet(task1, 2);
+			vTaskPrioritySet(task2, 1);
+			return;
+		}
 	}
 
-	/* If all is well we will never reach here as the scheduler will now be
-	running.  If we do reach here then it is likely that there was insufficient
-	heap available for the idle task to be created. */
-	for( ;; );
+	// Task 2 > Task 3 > Task 1
+	if (deadlines[1] > deadlines[2])
+	{
+		if (deadlines[2] > deadlines[0]) 
+		{
+			vTaskPrioritySet(task1, 3);
+			vTaskPrioritySet(task3, 2);
+			vTaskPrioritySet(task2, 1);
+			return;
+		}
+	}
+	// Task 3 > Task 1 > Task 2
+	else if (deadlines[1] < deadlines[2])
+	{
+		if (deadlines[1] < deadlines[0])
+		{
+			vTaskPrioritySet(task1, 3);
+			vTaskPrioritySet(task2, 2);
+			vTaskPrioritySet(task3, 1);
+			return;
+		}
+	}
+	// Task 2 == Task 3
+	else if (deadlines[1] == deadlines[2])
+	{
+		// Task 2 == Task 3 ; Task 1 > Task 2 (and Task 3)
+		if (deadlines[1] < deadlines[0])
+		{
+			vTaskPrioritySet(task2, 3);
+			vTaskPrioritySet(task3, 2);
+			vTaskPrioritySet(task1, 1);
+			return;
+		}
+		// Task 2 == Task 3 ; Task 2 (and Task 3) > Task 1
+		else if (deadlines[1] > deadlines[0])
+		{
+			vTaskPrioritySet(task1, 3);
+			vTaskPrioritySet(task2, 2);
+			vTaskPrioritySet(task3, 1);
+			return;
+		}
+		// Task 1 == Task 2 == Task 3 ; Default  (assumption)
+		if (deadlines[1] == deadlines[2])
+		{
+			vTaskPrioritySet(task1, 3);
+			vTaskPrioritySet(task2, 2);
+			vTaskPrioritySet(task3, 1);
+			return;
+		} 
+	}
+
+	// Task 1 > Task 3 > Task 2
+	if (deadlines[0] > deadlines[2]) 
+	{
+		if (deadlines[2] > deadlines[1])
+		{
+			vTaskPrioritySet(task2, 3);
+			vTaskPrioritySet(task3, 2);
+			vTaskPrioritySet(task1, 1);
+			return;
+		}
+	}
+	// Task 3 > Task 1 > Task 2
+	else if (deadlines[0] < deadlines[2])
+	{
+		if (deadlines[0] > deadlines[1])
+		{
+			vTaskPrioritySet(task2, 3);
+			vTaskPrioritySet(task1, 2);
+			vTaskPrioritySet(task3, 1);
+			return;
+		}
+	}
+	// Task 1 == Task 3
+	else if (deadlines[0] == deadlines[2])
+	{
+		// Task 1 == Task 3 ; Task 1 (and Task 3) > Task 2
+		if (deadlines[0] > deadlines[1])
+		{
+			vTaskPrioritySet(task2, 3);
+			vTaskPrioritySet(task1, 2);
+			vTaskPrioritySet(task3, 1); 
+			return;
+		}
+		// Task 1 == Task 3 ; Task 2 > Task 1 (and Task 3)
+		else if (deadlines[0] < deadlines[1])
+		{
+			vTaskPrioritySet(task1, 3);
+			vTaskPrioritySet(task3, 2);
+			vTaskPrioritySet(task2, 1);
+			return;
+		}
+	}
 }
+
 /*-----------------------------------------------------------*/
 
-static void prvQueueSendTask( void *pvParameters )
+static void edfTask1( void *pvParameters )
 {
-portTickType xNextWakeTime;
-const unsigned long ulValueToSend = 100UL;
-
-	/* Initialise xNextWakeTime - this only needs to be done once. */
-	xNextWakeTime = xTaskGetTickCount();
+	portTickType xNextWakeTime = 0;
+	const portTickType xPeriod = TASK1_PERIOD * S_TO_MS;
+	long count;
 
 	for( ;; )
 	{
-		/* Place this task in the blocked state until it is time to run again.
-		The block time is specified in ticks, the constant used converts ticks
-		to ms.  While in the Blocked state this task will not consume any CPU
-		time. */
-		vTaskDelayUntil( &xNextWakeTime, mainQUEUE_SEND_FREQUENCY_MS );
-
-		/* Send to the queue - causing the queue receive task to unblock and
-		print out a message.  0 is used as the block time so the sending 
-		operation will not block - it shouldn't need to block as the queue 
-		should always be empty at this point in the code. */
-		xQueueSend( xQueue, &ulValueToSend, 0 );
+		edfScheduler();
+		for (count = 0; count < (TASK1_EXECUTION_TIME * MS_TO_S_SIMULATOR); count++){}
+		vTaskDelayUntil(&xNextWakeTime, xPeriod);
+		deadlines[0] += TASK1_PERIOD;
+		edfScheduler();
 	}
 }
+
 /*-----------------------------------------------------------*/
 
-static void prvQueueReceiveTask( void *pvParameters )
+static void edfTask2( void *pvParameters )
 {
-unsigned long ulReceivedValue;
+	portTickType xNextWakeTime = 0;
+	const portTickType xPeriod = TASK2_PERIOD * S_TO_MS;
+	long count;
 
 	for( ;; )
 	{
-		/* Wait until something arrives in the queue - this task will block
-		indefinitely provided INCLUDE_vTaskSuspend is set to 1 in
-		FreeRTOSConfig.h. */
-		xQueueReceive( xQueue, &ulReceivedValue, portMAX_DELAY );
-
-		/*  To get here something must have been received from the queue, but
-		is it the expected value?  If it is, print out a pass message, if no,
-		print out a fail message. */
-		if( ulReceivedValue == 100UL )
-		{
-			printf( "Value 100 received - Tick = 0x%x\r\n", xTaskGetTickCount() );
-		}
-		else
-		{
-			printf( "Received an unexpected value\r\n" );
-		}
+		edfScheduler();
+		for (count = 0; count < (TASK2_EXECUTION_TIME * MS_TO_S_SIMULATOR); count++){}
+		vTaskDelayUntil(&xNextWakeTime, xPeriod);
+		deadlines[1] += TASK2_PERIOD;
+		edfScheduler();
 	}
 }
+
+/*-----------------------------------------------------------*/
+static void edfTask3( void *pvParameters )
+{
+	portTickType xNextWakeTime = 0;
+	const portTickType xPeriod = TASK3_PERIOD * S_TO_MS;
+	long count;
+
+	for( ;; )
+	{
+		edfScheduler();
+		for (count = 0; count < (TASK3_EXECUTION_TIME * MS_TO_S_SIMULATOR); count++){}
+		vTaskDelayUntil(&xNextWakeTime, xPeriod);
+		deadlines[2] += TASK3_PERIOD;
+		edfScheduler();
+	}
+}
+
 /*-----------------------------------------------------------*/
 
 int fputc( int iChar, FILE *pxNotUsed ) 
@@ -201,7 +270,24 @@ int fputc( int iChar, FILE *pxNotUsed )
 	{
 		while( mainITM_Port32( 0 ) == 0 );
 		mainITM_Port8( 0 ) = iChar;
-  	}
+	}
 
-  	return( iChar );
+	return( iChar );
+}
+
+/*-----------------------------------------------------------*/
+
+int main(void) {
+
+	// Create the tasks as required by the assignment
+	xTaskCreate( edfTask1, ( signed char * ) "task1", configMINIMAL_STACK_SIZE, NULL, 3, &task1 );
+	xTaskCreate( edfTask2, ( signed char * ) "task2", configMINIMAL_STACK_SIZE, NULL, 2, &task2 );
+	xTaskCreate( edfTask3, ( signed char * ) "task3", configMINIMAL_STACK_SIZE, NULL, 1, &task3 );
+
+	// Start the FreeRTOS Default Scheduler
+	vTaskStartScheduler();
+
+	// Run indefinately
+	while(1){}
+	/*-----------------------------------------------------------*/
 }
