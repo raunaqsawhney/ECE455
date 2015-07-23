@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 #define S_TO_MS 1000
-#define MS_TO_S_SIMULATOR 1680000
+#define MS_TO_S_MAGIC_NUMBER 1680000
 
 #define TASK1_EXECUTION_TIME 1
 #define TASK2_EXECUTION_TIME 2
@@ -38,9 +38,9 @@ static void edfTask3( void *pvParameters );
 /*
  * Handles for Tasks created
  */
- xTaskHandle task1;
- xTaskHandle task2;
- xTaskHandle task3;
+ xTaskHandle T1;
+ xTaskHandle T2;
+ xTaskHandle T3;
 
 /*
  * Redirects the printf() output to the serial window in the Keil simulator
@@ -64,61 +64,18 @@ void edfScheduler()
 {
 
 	// Default priorities, based on earliest deadlines
-	vTaskPrioritySet(task1, 3);
-	vTaskPrioritySet(task2, 2);
-	vTaskPrioritySet(task3, 1);
-
-	// Task 1 > Task 2 > Task 3
-	if (deadlines[0] > deadlines[1])
-	{
-		if (deadlines[1] > deadlines[2])
-		{
-			vTaskPrioritySet(task3, 3);
-			vTaskPrioritySet(task2, 2);
-			vTaskPrioritySet(task1, 1);
-			return;
-		}
-	} 
-	// Task 2 > Task 1 > Task 3
-	else if (deadlines[0] < deadlines[1])
-	{
-		if (deadlines[0] > deadlines[2])
-		{
-			vTaskPrioritySet(task3, 3);
-			vTaskPrioritySet(task1, 2);
-			vTaskPrioritySet(task2, 1);
-			return;
-		}
-	}
-	// Task 1 == Task 2
-	else if (deadlines[0] == deadlines[1])
-	{
-		// Task 1 == Task 2 ; Task 3 > Task 1 (and Task 2)
-		if (deadlines[0] < deadlines[2])
-		{
-			vTaskPrioritySet(task1, 3);
-			vTaskPrioritySet(task2, 2);
-			vTaskPrioritySet(task3, 1);
-			return;
-		}
-		// Task 1 == Task 2 ; Task 1 (and Task 2) > Task 3
-		else if (deadlines[0] > deadlines[2])
-		{
-			vTaskPrioritySet(task3, 3);
-			vTaskPrioritySet(task1, 2);
-			vTaskPrioritySet(task2, 1);
-			return;
-		}
-	}
+	vTaskPrioritySet(T1, 3);
+	vTaskPrioritySet(T2, 2);
+	vTaskPrioritySet(T3, 1);
 
 	// Task 2 > Task 3 > Task 1
 	if (deadlines[1] > deadlines[2])
 	{
 		if (deadlines[2] > deadlines[0]) 
 		{
-			vTaskPrioritySet(task1, 3);
-			vTaskPrioritySet(task3, 2);
-			vTaskPrioritySet(task2, 1);
+			vTaskPrioritySet(T1, 3);
+			vTaskPrioritySet(T3, 2);
+			vTaskPrioritySet(T2, 1);
 			return;
 		}
 	}
@@ -127,9 +84,9 @@ void edfScheduler()
 	{
 		if (deadlines[1] < deadlines[0])
 		{
-			vTaskPrioritySet(task1, 3);
-			vTaskPrioritySet(task2, 2);
-			vTaskPrioritySet(task3, 1);
+			vTaskPrioritySet(T1, 3);
+			vTaskPrioritySet(T2, 2);
+			vTaskPrioritySet(T3, 1);
 			return;
 		}
 	}
@@ -139,27 +96,70 @@ void edfScheduler()
 		// Task 2 == Task 3 ; Task 1 > Task 2 (and Task 3)
 		if (deadlines[1] < deadlines[0])
 		{
-			vTaskPrioritySet(task2, 3);
-			vTaskPrioritySet(task3, 2);
-			vTaskPrioritySet(task1, 1);
+			vTaskPrioritySet(T2, 3);
+			vTaskPrioritySet(T3, 2);
+			vTaskPrioritySet(T1, 1);
 			return;
 		}
 		// Task 2 == Task 3 ; Task 2 (and Task 3) > Task 1
 		else if (deadlines[1] > deadlines[0])
 		{
-			vTaskPrioritySet(task1, 3);
-			vTaskPrioritySet(task2, 2);
-			vTaskPrioritySet(task3, 1);
+			vTaskPrioritySet(T1, 3);
+			vTaskPrioritySet(T2, 2);
+			vTaskPrioritySet(T3, 1);
 			return;
 		}
 		// Task 1 == Task 2 == Task 3 ; Default  (assumption)
 		if (deadlines[1] == deadlines[2])
 		{
-			vTaskPrioritySet(task1, 3);
-			vTaskPrioritySet(task2, 2);
-			vTaskPrioritySet(task3, 1);
+			vTaskPrioritySet(T1, 3);
+			vTaskPrioritySet(T2, 2);
+			vTaskPrioritySet(T3, 1);
 			return;
 		} 
+	}
+
+	// Task 1 > Task 2 > Task 3
+	if (deadlines[0] > deadlines[1])
+	{
+		if (deadlines[1] > deadlines[2])
+		{
+			vTaskPrioritySet(T3, 3);
+			vTaskPrioritySet(T2, 2);
+			vTaskPrioritySet(T1, 1);
+			return;
+		}
+	} 
+	// Task 2 > Task 1 > Task 3
+	else if (deadlines[0] < deadlines[1])
+	{
+		if (deadlines[0] > deadlines[2])
+		{
+			vTaskPrioritySet(T3, 3);
+			vTaskPrioritySet(T1, 2);
+			vTaskPrioritySet(T2, 1);
+			return;
+		}
+	}
+	// Task 1 == Task 2
+	else if (deadlines[0] == deadlines[1])
+	{
+		// Task 1 == Task 2 ; Task 3 > Task 1 (and Task 2)
+		if (deadlines[0] < deadlines[2])
+		{
+			vTaskPrioritySet(T1, 3);
+			vTaskPrioritySet(T2, 2);
+			vTaskPrioritySet(T3, 1);
+			return;
+		}
+		// Task 1 == Task 2 ; Task 1 (and Task 2) > Task 3
+		else if (deadlines[0] > deadlines[2])
+		{
+			vTaskPrioritySet(T3, 3);
+			vTaskPrioritySet(T1, 2);
+			vTaskPrioritySet(T2, 1);
+			return;
+		}
 	}
 
 	// Task 1 > Task 3 > Task 2
@@ -167,9 +167,9 @@ void edfScheduler()
 	{
 		if (deadlines[2] > deadlines[1])
 		{
-			vTaskPrioritySet(task2, 3);
-			vTaskPrioritySet(task3, 2);
-			vTaskPrioritySet(task1, 1);
+			vTaskPrioritySet(T2, 3);
+			vTaskPrioritySet(T3, 2);
+			vTaskPrioritySet(T1, 1);
 			return;
 		}
 	}
@@ -178,9 +178,9 @@ void edfScheduler()
 	{
 		if (deadlines[0] > deadlines[1])
 		{
-			vTaskPrioritySet(task2, 3);
-			vTaskPrioritySet(task1, 2);
-			vTaskPrioritySet(task3, 1);
+			vTaskPrioritySet(T2, 3);
+			vTaskPrioritySet(T1, 2);
+			vTaskPrioritySet(T3, 1);
 			return;
 		}
 	}
@@ -190,19 +190,43 @@ void edfScheduler()
 		// Task 1 == Task 3 ; Task 1 (and Task 3) > Task 2
 		if (deadlines[0] > deadlines[1])
 		{
-			vTaskPrioritySet(task2, 3);
-			vTaskPrioritySet(task1, 2);
-			vTaskPrioritySet(task3, 1); 
+			vTaskPrioritySet(T2, 3);
+			vTaskPrioritySet(T1, 2);
+			vTaskPrioritySet(T3, 1); 
 			return;
 		}
 		// Task 1 == Task 3 ; Task 2 > Task 1 (and Task 3)
 		else if (deadlines[0] < deadlines[1])
 		{
-			vTaskPrioritySet(task1, 3);
-			vTaskPrioritySet(task3, 2);
-			vTaskPrioritySet(task2, 1);
+			vTaskPrioritySet(T1, 3);
+			vTaskPrioritySet(T3, 2);
+			vTaskPrioritySet(T2, 1);
 			return;
 		}
+	}
+}
+
+void execute_task(int taskNumber)
+{
+	int execution_time;
+	long count;
+	
+	switch(taskNumber)
+	{
+		case 0:
+			execution_time = TASK1_EXECUTION_TIME;
+		break;
+		case 1:
+			execution_time = TASK2_EXECUTION_TIME;
+		break;
+		case 2:
+			execution_time = TASK3_EXECUTION_TIME;
+		break;
+	}
+	
+	for (count = 0 ; count < (execution_time * MS_TO_S_MAGIC_NUMBER); count++)
+	{
+		// Execute task
 	}
 }
 
@@ -210,15 +234,14 @@ void edfScheduler()
 
 static void edfTask1( void *pvParameters )
 {
-	portTickType xNextWakeTime = 0;
+	portTickType xRestartTime = 0;
 	const portTickType xPeriod = TASK1_PERIOD * S_TO_MS;
-	long count;
 
 	for( ;; )
 	{
 		edfScheduler();
-		for (count = 0; count < (TASK1_EXECUTION_TIME * MS_TO_S_SIMULATOR); count++){}
-		vTaskDelayUntil(&xNextWakeTime, xPeriod);
+		execute_task(0);
+		vTaskDelayUntil(&xRestartTime, xPeriod);
 		deadlines[0] += TASK1_PERIOD;
 		edfScheduler();
 	}
@@ -228,15 +251,14 @@ static void edfTask1( void *pvParameters )
 
 static void edfTask2( void *pvParameters )
 {
-	portTickType xNextWakeTime = 0;
+	portTickType xRestartTime = 0;
 	const portTickType xPeriod = TASK2_PERIOD * S_TO_MS;
-	long count;
 
 	for( ;; )
 	{
 		edfScheduler();
-		for (count = 0; count < (TASK2_EXECUTION_TIME * MS_TO_S_SIMULATOR); count++){}
-		vTaskDelayUntil(&xNextWakeTime, xPeriod);
+		execute_task(1);
+		vTaskDelayUntil(&xRestartTime, xPeriod);
 		deadlines[1] += TASK2_PERIOD;
 		edfScheduler();
 	}
@@ -245,15 +267,14 @@ static void edfTask2( void *pvParameters )
 /*-----------------------------------------------------------*/
 static void edfTask3( void *pvParameters )
 {
-	portTickType xNextWakeTime = 0;
+	portTickType xRestartTime = 0;
 	const portTickType xPeriod = TASK3_PERIOD * S_TO_MS;
-	long count;
 
 	for( ;; )
 	{
 		edfScheduler();
-		for (count = 0; count < (TASK3_EXECUTION_TIME * MS_TO_S_SIMULATOR); count++){}
-		vTaskDelayUntil(&xNextWakeTime, xPeriod);
+		execute_task(2);
+		vTaskDelayUntil(&xRestartTime, xPeriod);
 		deadlines[2] += TASK3_PERIOD;
 		edfScheduler();
 	}
@@ -280,9 +301,9 @@ int fputc( int iChar, FILE *pxNotUsed )
 int main(void) {
 
 	// Create the tasks as required by the assignment
-	xTaskCreate( edfTask1, ( signed char * ) "task1", configMINIMAL_STACK_SIZE, NULL, 3, &task1 );
-	xTaskCreate( edfTask2, ( signed char * ) "task2", configMINIMAL_STACK_SIZE, NULL, 2, &task2 );
-	xTaskCreate( edfTask3, ( signed char * ) "task3", configMINIMAL_STACK_SIZE, NULL, 1, &task3 );
+	xTaskCreate( edfTask1, ( signed char * ) "T1", configMINIMAL_STACK_SIZE, NULL, 3, &T1 );
+	xTaskCreate( edfTask2, ( signed char * ) "T2", configMINIMAL_STACK_SIZE, NULL, 2, &T2 );
+	xTaskCreate( edfTask3, ( signed char * ) "T3", configMINIMAL_STACK_SIZE, NULL, 1, &T3 );
 
 	// Start the FreeRTOS Default Scheduler
 	vTaskStartScheduler();
