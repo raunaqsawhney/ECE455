@@ -1,10 +1,10 @@
 Dependencies for Project 'Simple-FreeRTOS-Demo', Target 'Simple-FreeRTOS-Demo': (DO NOT MODIFY !)
 F (.\startup_MPS_CM3.s)(0x4CFA8792)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\Luminary--pd "__UVISION_VERSION SETA 515"--list .\startup_mps_cm3.lst --xref -o .\output\startup_mps_cm3.o --depend .\output\startup_mps_cm3.d)
-F (.\main.c)(0x4CFBCAA4)(-c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I. -I.\FreeRTOS-Source\include -I.\FreeRTOS-Source\portable\RVDS\ARM_CM3-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\Luminary-D__UVISION_VERSION="515"-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+F (.\main.c)(0x55B260DA)(-c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I. -I.\FreeRTOS-Source\include -I.\FreeRTOS-Source\portable\RVDS\ARM_CM3-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\Luminary-D__UVISION_VERSION="515"-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
 I (.\FreeRTOS-Source\include\FreeRTOS.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\projdefs.h)(0x4CFA8790)
-I (.\FreeRTOSConfig.h)(0x4CFAE5EE)
+I (.\FreeRTOSConfig.h)(0x55B03619)
 I (.\FreeRTOS-Source\include\portable.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\portmacro.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\mpu_wrappers.h)(0x4CFA8790)
@@ -12,15 +12,15 @@ I (.\FreeRTOS-Source\include\task.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\list.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\queue.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C2FC88)
-F (.\FreeRTOSConfig.h)(0x4CFAE5EE)()
-F (.\FreeRTOS-Source\tasks.c)(0x4CFA8790)(-c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I. -I.\FreeRTOS-Source\include -I.\FreeRTOS-Source\portable\RVDS\ARM_CM3-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\Luminary-D__UVISION_VERSION="515"-o .\output\tasks.o --omf_browse .\output\tasks.crf --depend .\output\tasks.d)
+F (.\FreeRTOSConfig.h)(0x55B03619)()
+F (.\FreeRTOS-Source\tasks.c)(0x55B047B5)(-c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I. -I.\FreeRTOS-Source\include -I.\FreeRTOS-Source\portable\RVDS\ARM_CM3-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\Luminary-D__UVISION_VERSION="515"-o .\output\tasks.o --omf_browse .\output\tasks.crf --depend .\output\tasks.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C2FC88)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C2FC88)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\FreeRTOS.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\projdefs.h)(0x4CFA8790)
-I (.\FreeRTOSConfig.h)(0x4CFAE5EE)
+I (.\FreeRTOSConfig.h)(0x55B03619)
 I (.\FreeRTOS-Source\include\portable.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\portmacro.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\mpu_wrappers.h)(0x4CFA8790)
@@ -32,7 +32,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\FreeRTOS.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\projdefs.h)(0x4CFA8790)
-I (.\FreeRTOSConfig.h)(0x4CFAE5EE)
+I (.\FreeRTOSConfig.h)(0x55B03619)
 I (.\FreeRTOS-Source\include\portable.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\portmacro.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\mpu_wrappers.h)(0x4CFA8790)
@@ -43,7 +43,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\FreeRTOS.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\projdefs.h)(0x4CFA8790)
-I (.\FreeRTOSConfig.h)(0x4CFAE5EE)
+I (.\FreeRTOSConfig.h)(0x55B03619)
 I (.\FreeRTOS-Source\include\portable.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\portmacro.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\mpu_wrappers.h)(0x4CFA8790)
@@ -54,7 +54,7 @@ F (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\port.c)(0x4CFA8790)(-c --cpu Cortex-M
 I (.\FreeRTOS-Source\include\FreeRTOS.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\projdefs.h)(0x4CFA8790)
-I (.\FreeRTOSConfig.h)(0x4CFAE5EE)
+I (.\FreeRTOSConfig.h)(0x55B03619)
 I (.\FreeRTOS-Source\include\portable.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\portmacro.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\mpu_wrappers.h)(0x4CFA8790)
@@ -65,7 +65,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\FreeRTOS.h)(0x4CFA8790)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C2FC88)
 I (.\FreeRTOS-Source\include\projdefs.h)(0x4CFA8790)
-I (.\FreeRTOSConfig.h)(0x4CFAE5EE)
+I (.\FreeRTOSConfig.h)(0x55B03619)
 I (.\FreeRTOS-Source\include\portable.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\portable\RVDS\ARM_CM3\portmacro.h)(0x4CFA8790)
 I (.\FreeRTOS-Source\include\mpu_wrappers.h)(0x4CFA8790)
